@@ -56,12 +56,12 @@
       font-size: 0.7rem;
       font-weight: 600;
       letter-spacing: 0.08em;
-      color: #ccc;
+      color: #fff;
       padding: 6px 16px;
       border-bottom: 1px solid #222;
     }
 
-    .header-top span { color: var(--orange); }
+    .header-top .sep { color: var(--orange); }
 
     .header-brand {
       display: flex;
@@ -90,6 +90,9 @@
       flex-direction: column;
       align-items: flex-end;
       gap: 2px;
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 8px;
     }
 
     .brand-dh {
@@ -288,7 +291,7 @@
 
   <header>
     <div class="header-top">
-      BUY &nbsp;|&nbsp; <span>SELL</span> &nbsp;|&nbsp; LEASE &nbsp;|&nbsp; <span>PROPERTY MANAGEMENT</span>
+      BUY <span class="sep">&nbsp;|&nbsp;</span> SELL <span class="sep">&nbsp;|&nbsp;</span> LEASE <span class="sep">&nbsp;|&nbsp;</span> PROPERTY MANAGEMENT
     </div>
     <div class="header-brand">
       <div class="brand-left">
