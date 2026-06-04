@@ -1,0 +1,21 @@
+{
+  "name": "Rental Viewer Sign-In",
+  "short_name": "Rental Sign-In",
+  "description": "Issac Realty Team — Rental Viewing Registration",
+  "start_url": "/rental-viewing/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#E8470A",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
