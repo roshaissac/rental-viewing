@@ -64,21 +64,62 @@
     .header-top span { color: var(--orange); }
 
     .header-brand {
-      text-align: center;
-      padding: 18px 16px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px 10px;
+      gap: 12px;
     }
 
-    .header-brand img {
-      max-height: 56px;
-      width: auto;
+    .brand-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
-    .header-tagline {
+    .brand-name {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--orange);
+      letter-spacing: -0.01em;
+      line-height: 1;
+      font-family: Georgia, serif;
+    }
+
+    .brand-sub {
+      font-size: 0.65rem;
+      color: #aaa;
+      letter-spacing: 0.05em;
+    }
+
+    .brand-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+    }
+
+    .brand-dh {
+      font-size: 0.62rem;
+      color: #888;
+      letter-spacing: 0.04em;
+      text-align: right;
+    }
+
+    .brand-dh strong {
+      color: #bbb;
+      display: block;
+      font-size: 0.72rem;
+    }
+
+    .header-strip {
+      background: var(--orange);
       text-align: center;
       font-size: 0.72rem;
-      color: #aaa;
-      padding: 0 16px 14px;
-      letter-spacing: 0.04em;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.06em;
+      padding: 5px 16px;
     }
 
     /* ── Hero banner ── */
@@ -257,10 +298,18 @@
       BUY &nbsp;|&nbsp; <span>SELL</span> &nbsp;|&nbsp; LEASE &nbsp;|&nbsp; <span>PROPERTY MANAGEMENT</span>
     </div>
     <div class="header-brand">
-      <img src="https://raw.githubusercontent.com/roshaissac/design-frameworks/main/assets/IssacRealty%20logo%20for%20headers.png"
-           alt="Issac Realty Team" />
+      <div class="brand-left">
+        <div class="brand-name">Issac Realty Team</div>
+        <div class="brand-sub">ALBERTA REAL ESTATE</div>
+      </div>
+      <div class="brand-right">
+        <div class="brand-dh">
+          <strong>DREAMHOUSE REALTY</strong>
+          Where Dreams Become Addresses
+        </div>
+      </div>
     </div>
-    <div class="header-tagline">Associates of Dreamhouse Realty &nbsp;·&nbsp; Alberta</div>
+    <div class="header-strip">Associates of Dreamhouse Realty Ltd. &nbsp;·&nbsp; Alberta</div>
   </header>
 
   <div class="hero">
@@ -309,9 +358,7 @@
   </main>
 
   <footer>
-    <img src="https://raw.githubusercontent.com/roshaissac/design-frameworks/main/assets/dreamhouse-logo.png"
-         alt="Dreamhouse Realty" />
-    <p>Issac Realty Team · Associates of Dreamhouse Realty Ltd. · Alberta</p>
+    <p>Issac Realty Team &nbsp;·&nbsp; Associates of Dreamhouse Realty Ltd. &nbsp;·&nbsp; Alberta</p>
   </footer>
 
 </body>
