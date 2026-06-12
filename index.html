@@ -283,8 +283,15 @@
         </fieldset>
 
         <fieldset>
-          <legend>🏡 Essentials in your next home <small>Optional</small></legend>
-          <div id="essentials-grid"></div>
+          <legend>🏡 Essentials in your next home <small>Optional — your words, your wish list</small></legend>
+          <label class="f">Bedrooms</label>
+          <input type="text" id="ess-bedrooms" placeholder="e.g. 3, or 2 + a den for the office">
+          <label class="f">Bathrooms</label>
+          <input type="text" id="ess-bathrooms" placeholder="e.g. 2 full, main floor preferred">
+          <label class="f">Car Parking</label>
+          <input type="text" id="ess-parking" placeholder="e.g. heated garage, or street is fine">
+          <label class="f">Anything else you must have (or must avoid)?</label>
+          <textarea id="ess-musthaves" rows="2" placeholder="e.g. big pantry on the main floor, no carpet, near a dog park…"></textarea>
         </fieldset>
 
         <fieldset>
@@ -358,13 +365,8 @@ var API = "https://script.google.com/macros/s/AKfycbyTB3OVLFtFeXun4F5zPLQn8EkZhQ
 
 // Grid definitions — row labels must match Code.gs (UNIT_FEEDBACK_ROWS / ESSENTIALS_ROWS)
 var FEEDBACK_ROWS = ["Bedrooms","Bathrooms","Kitchen","Front room","Kerb appeal","Backyard","Overall","Rent pricing"];
-var ESSENTIALS = [
-  { row: "Bedrooms",    opts: ["1","2","3","4+"] },
-  { row: "Bathrooms",   opts: ["1","1.5","2","2+"] },
-  { row: "Car Parking", opts: ["None","1","2+"] },
-];
 
-var answers = { unitFeedback: {}, essentials: {}, futureBuyer: "" };
+var answers = { unitFeedback: {}, futureBuyer: "" };
 
 // build Yes/No feedback grid
 var fg = document.getElementById("feedback-grid");
@@ -385,27 +387,6 @@ fg.addEventListener("click", function (e) {
   b.parentElement.querySelectorAll("button").forEach(function (x) {
     x.className = "";
     if (!already && x === b) x.className = v === "Yes" ? "sel-yes" : "sel-no";
-  });
-});
-
-// build essentials grid
-var eg = document.getElementById("essentials-grid");
-ESSENTIALS.forEach(function (def) {
-  var div = document.createElement("div");
-  div.className = "grid-row";
-  div.innerHTML = "<span>" + def.row + "</span>" +
-    '<span class="seg">' + def.opts.map(function (o) {
-      return '<button type="button" data-row="' + def.row + '" data-v="' + o + '">' + o + "</button>";
-    }).join("") + "</span>";
-  eg.appendChild(div);
-});
-eg.addEventListener("click", function (e) {
-  var b = e.target.closest("button"); if (!b) return;
-  var row = b.dataset.row, v = b.dataset.v;
-  var already = answers.essentials[row] === v;
-  answers.essentials[row] = already ? "" : v;
-  b.parentElement.querySelectorAll("button").forEach(function (x) {
-    x.className = (!already && x === b) ? "sel-opt" : "";
   });
 });
 
@@ -456,7 +437,13 @@ document.getElementById("signin").addEventListener("submit", function (e) {
     budget: get("budget"), timeline: get("timeline"),
     livingSituation: get("livingSituation"),
     futureBuyer: answers.futureBuyer,
-    unitFeedback: answers.unitFeedback, essentials: answers.essentials,
+    unitFeedback: answers.unitFeedback,
+    essentials: {
+      "Bedrooms":    get("ess-bedrooms"),
+      "Bathrooms":   get("ess-bathrooms"),
+      "Car Parking": get("ess-parking"),
+      "Must-haves":  get("ess-musthaves"),
+    },
     howFound: get("howFound"), comments: get("comments"),
     website: get("website"),   // honeypot
   };
@@ -484,7 +471,7 @@ document.getElementById("signin").addEventListener("submit", function (e) {
 // kiosk reset — iPad gets handed to the next viewer
 function resetForm() {
   document.getElementById("signin").reset();
-  answers = { unitFeedback: {}, essentials: {}, futureBuyer: "" };
+  answers = { unitFeedback: {}, futureBuyer: "" };
   document.querySelectorAll(".seg button, .chips button").forEach(function (b) {
     b.className = b.className.indexOf("sel") > -1 ? "" : b.className;
     b.classList.remove("sel", "sel-yes", "sel-no", "sel-opt");
