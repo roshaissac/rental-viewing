@@ -5,3 +5,4 @@ Code.gs
 appsscript.json
 .DS_Store
 .claude/
+.claspignore
