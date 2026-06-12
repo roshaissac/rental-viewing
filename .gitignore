@@ -1,0 +1,5 @@
+# Public GitHub Pages repo — never track backend or local files.
+# Code.gs is the GAS backend; tracked files are served at roshaissac.github.io/rental-viewing/
+Code.gs
+.DS_Store
+.claude/
