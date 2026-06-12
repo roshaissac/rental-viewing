@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rental Viewer Registration — Issac Realty Team</title>
+  <title>Rental Viewer Sign-In — Issac Realty Team</title>
 
   <!-- OG / WhatsApp share tags -->
-  <meta property="og:title"       content="Rental Viewer Registration — Issac Realty Team" />
+  <meta property="og:title"       content="Rental Viewer Sign-In — Issac Realty Team" />
   <meta property="og:description" content="Viewing a rental with Sheena & Rosh Issac? Sign in here — takes 60 seconds." />
   <meta property="og:image"       content="https://raw.githubusercontent.com/roshaissac/rental-viewing/main/og-image.png" />
   <meta property="og:image:width"  content="1200" />
@@ -25,15 +25,17 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Rental Sign-In" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
-  <meta name="theme-color" content="#FF7A1A" />
+  <meta name="theme-color" content="#E8470A" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --orange: #FF7A1A;
+      --orange: #E8470A;   /* Issac Realty orange — suite standard */
       --black:  #000000;
-      --light:  #f5f5f5;
+      --light:  #f0f2f5;
+      --green:  #2c6e49;
+      --line:   #d8dce1;
     }
 
     body {
@@ -45,245 +47,151 @@
       flex-direction: column;
     }
 
-    /* ── Header ── */
-    header {
-      background: var(--black);
-      padding: 0;
-    }
-
+    /* ── Header (unchanged suite branding) ── */
+    header { background: var(--black); }
     .header-top {
-      text-align: center;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      color: #fff;
-      padding: 6px 16px;
+      text-align: center; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; color: #fff; padding: 6px 16px;
       border-bottom: 1px solid #222;
     }
-
     .header-top .sep { color: var(--orange); }
-
     .header-brand {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 20px 10px;
-      gap: 12px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px 10px; gap: 12px;
     }
-
-    .brand-left {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
     .brand-name {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: var(--orange);
-      letter-spacing: -0.01em;
-      line-height: 1;
+      font-size: 1.35rem; font-weight: 800; color: var(--orange);
+      letter-spacing: -0.01em; line-height: 1;
     }
-
-    .brand-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 2px;
-      background: #fff;
-      border-radius: 6px;
-      padding: 4px 8px;
-    }
-
-    .brand-dh {
-      font-size: 0.62rem;
-      color: #888;
-      letter-spacing: 0.04em;
-      text-align: right;
-    }
-
-    .brand-dh strong {
-      color: #bbb;
-      display: block;
-      font-size: 0.72rem;
-    }
-
+    .brand-right { background: #fff; border-radius: 6px; padding: 4px 8px; }
     .header-strip {
-      background: var(--orange);
-      text-align: center;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: 0.06em;
-      padding: 5px 16px;
+      background: var(--orange); text-align: center; font-size: 0.72rem;
+      font-weight: 700; color: #fff; letter-spacing: 0.06em; padding: 5px 16px;
     }
 
-    /* ── Hero banner ── */
-    .hero {
-      background: var(--orange);
-      text-align: center;
-      padding: 20px 24px;
-    }
+    .hero { background: var(--orange); text-align: center; padding: 18px 24px; }
+    .hero h1 { font-size: 1.4rem; font-weight: 800; color: #fff; line-height: 1.2; }
+    .hero p  { font-size: 0.88rem; color: rgba(255,255,255,0.9); margin-top: 4px; }
 
-    .hero h1 {
-      font-size: 1.45rem;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.2;
-      margin-bottom: 6px;
+    /* ── Unit bar (live from CONFIG via doGet) ── */
+    #unit-bar {
+      background: #1a1a1a; color: #fff; text-align: center;
+      font-size: 0.82rem; font-weight: 600; padding: 9px 16px; line-height: 1.5;
     }
+    #unit-bar small { color: #bbb; font-weight: 400; }
 
-    .hero p {
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.88);
-    }
-
-    /* ── Main card ── */
-    main {
-      flex: 1;
-      max-width: 520px;
-      width: 100%;
-      margin: 32px auto;
-      padding: 0 16px;
-    }
-
+    main { flex: 1; max-width: 560px; width: 100%; margin: 22px auto; padding: 0 14px; }
     .card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      overflow: hidden;
+      background: #fff; border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden;
+      padding: 24px 20px;
     }
 
-    .card-body {
-      padding: 28px 24px;
+    .trust {
+      font-size: 0.78rem; color: #777; text-align: center;
+      margin-bottom: 18px; line-height: 1.5;
+    }
+    .trust b { color: var(--green); }
+
+    fieldset { border: none; margin-bottom: 6px; }
+    legend {
+      font-size: 0.95rem; font-weight: 800; color: var(--black);
+      padding: 14px 0 10px; display: block; width: 100%;
+    }
+    legend small { font-weight: 400; color: #888; font-size: 0.78rem; display: block; margin-top: 2px; }
+
+    label.f {
+      display: block; font-size: 0.8rem; font-weight: 700; color: #555;
+      margin: 12px 0 5px;
+    }
+    label.f .req { color: var(--orange); }
+    input[type=text], input[type=email], input[type=tel], select, textarea {
+      width: 100%; font: inherit; font-size: 1rem;
+      border: 1.5px solid var(--line); border-radius: 9px;
+      padding: 13px 12px; background: #fff; color: var(--black);
+      -webkit-appearance: none; appearance: none;
+    }
+    select {
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+      padding-right: 34px;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: 2px solid var(--orange); border-color: var(--orange);
+    }
+    .row2 { display: flex; gap: 10px; }
+    .row2 > div { flex: 1; }
+
+    /* ── Yes/No grid rows ── */
+    .grid-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; padding: 9px 0; border-bottom: 1px solid #f0f2f5;
+    }
+    .grid-row span { font-size: 0.9rem; color: #333; }
+    .seg { display: flex; gap: 6px; }
+    .seg button {
+      font: inherit; font-size: 0.85rem; font-weight: 700;
+      border: 1.5px solid var(--line); background: #fff; color: #555;
+      border-radius: 18px; padding: 8px 18px; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .seg button.sel-yes { background: var(--green);  border-color: var(--green);  color: #fff; }
+    .seg button.sel-no  { background: #555;          border-color: #555;          color: #fff; }
+    .seg button.sel-opt { background: var(--orange); border-color: var(--orange); color: #fff; }
+
+    /* ── Radio chips (future buyer) ── */
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .chips button {
+      font: inherit; font-size: 0.86rem; font-weight: 600;
+      border: 1.5px solid var(--line); background: #fff; color: #333;
+      border-radius: 18px; padding: 10px 14px; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .chips button.sel { background: var(--orange); border-color: var(--orange); color: #fff; }
+
+    .err { color: #c0392b; font-size: 0.8rem; margin-top: 4px; display: none; }
+
+    .submit-btn {
+      display: block; width: 100%; font: inherit;
+      background: var(--orange); color: #fff; border: none; cursor: pointer;
+      font-size: 1.05rem; font-weight: 800; padding: 16px; border-radius: 9px;
+      margin-top: 20px; letter-spacing: 0.02em;
+    }
+    .submit-btn:disabled { opacity: 0.6; }
+    .submit-note { text-align: center; font-size: 0.74rem; color: #999; margin-top: 9px; }
+
+    /* honeypot — humans never see it */
+    .hp { position: absolute; left: -9999px; opacity: 0; height: 0; overflow: hidden; }
+
+    /* ── Success view ── */
+    #success { display: none; text-align: center; padding: 30px 20px; }
+    #success .big { font-size: 3rem; }
+    #success h2 { font-size: 1.25rem; margin: 10px 0 8px; }
+    #success p { font-size: 0.9rem; color: #555; line-height: 1.6; }
+    #success .phones { margin: 16px 0; font-size: 0.95rem; font-weight: 600; color: var(--black); line-height: 1.8; }
+    .again-btn {
+      font: inherit; background: var(--black); color: #fff; border: none;
+      border-radius: 9px; font-weight: 700; padding: 14px 26px;
+      margin-top: 14px; cursor: pointer;
     }
 
-    .card-body h2 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--black);
-      margin-bottom: 8px;
-    }
-
-    .card-body p {
-      font-size: 0.88rem;
-      color: #555;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    .steps {
-      list-style: none;
-      margin-bottom: 24px;
-    }
-
-    .steps li {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 0.86rem;
-      color: #444;
-      margin-bottom: 10px;
-    }
-
-    .steps li .num {
-      flex-shrink: 0;
-      width: 22px;
-      height: 22px;
-      background: var(--orange);
-      color: #fff;
-      border-radius: 50%;
-      font-size: 0.75rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 1px;
-    }
-
-    .cta-btn {
-      display: block;
-      width: 100%;
-      background: var(--orange);
-      color: #fff;
-      text-align: center;
-      text-decoration: none;
-      font-size: 1rem;
-      font-weight: 700;
-      padding: 16px 24px;
-      border-radius: 8px;
-      letter-spacing: 0.02em;
-      transition: background 0.15s;
-    }
-
-    .cta-btn:hover { background: #c93c07; }
-
-    .cta-note {
-      text-align: center;
-      font-size: 0.75rem;
-      color: #999;
-      margin-top: 10px;
-    }
-
-    /* ── Agents strip ── */
     .agents {
-      border-top: 1px solid #f0f0f0;
-      padding: 20px 24px;
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
+      border-top: 1px solid #f0f0f0; padding: 18px 20px; margin-top: 20px;
+      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
     }
+    .agent { text-align: center; }
+    .agent-name { font-size: 0.9rem; font-weight: 700; color: var(--orange); }
+    .agent-role { font-size: 0.72rem; color: #888; margin-bottom: 4px; }
+    .agent-contact { font-size: 0.78rem; color: #444; }
+    .agent-divider { width: 1px; background: #e0e0e0; align-self: stretch; }
 
-    .agent {
-      text-align: center;
-    }
-
-    .agent-name {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--orange);
-    }
-
-    .agent-role {
-      font-size: 0.72rem;
-      color: #888;
-      margin-bottom: 4px;
-    }
-
-    .agent-contact {
-      font-size: 0.78rem;
-      color: #444;
-    }
-
-    .agent-divider {
-      width: 1px;
-      background: #e0e0e0;
-      align-self: stretch;
-    }
-
-    /* ── Footer ── */
-    footer {
-      background: var(--black);
-      padding: 14px 16px;
-      text-align: center;
-    }
-
-    footer img {
-      max-height: 36px;
-      width: auto;
-      opacity: 0.85;
-    }
-
-    footer p {
-      font-size: 0.68rem;
-      color: #777;
-      margin-top: 8px;
-    }
+    footer { background: var(--black); padding: 14px 16px; text-align: center; }
+    footer p { font-size: 0.68rem; color: #777; }
 
     @media (max-width: 400px) {
       .hero h1 { font-size: 1.2rem; }
       .agent-divider { display: none; }
+      .seg button { padding: 8px 13px; }
     }
   </style>
 </head>
@@ -294,9 +202,7 @@
       BUY <span class="sep">&nbsp;|&nbsp;</span> SELL <span class="sep">&nbsp;|&nbsp;</span> LEASE <span class="sep">&nbsp;|&nbsp;</span> PROPERTY MANAGEMENT
     </div>
     <div class="header-brand">
-      <div class="brand-left">
-        <div class="brand-name">Issac Realty Team</div>
-      </div>
+      <div class="brand-name">Issac Realty Team</div>
       <div class="brand-right">
         <img src="icons/dreamhouse-logo.png" alt="Dreamhouse Realty" style="height:48px;width:auto;" />
       </div>
@@ -306,31 +212,124 @@
 
   <div class="hero">
     <h1>Rental Viewer Sign-In</h1>
-    <p>Thanks for viewing today — please take 60 seconds to register below</p>
+    <p>Thanks for viewing today — sign in below, it takes about 60 seconds</p>
   </div>
+
+  <div id="unit-bar"><small>Loading unit details…</small></div>
 
   <main>
     <div class="card">
-      <div class="card-body">
-        <h2>Welcome to the viewing</h2>
-        <p>
-          Please fill out the short registration form. Your information is kept
-          private and helps us send you follow-up details about this unit and
-          any similar listings.
-        </p>
 
-        <ul class="steps">
-          <li><span class="num">1</span> Tap the button below to open the form</li>
-          <li><span class="num">2</span> Fill in your contact details (takes ~60 sec)</li>
-          <li><span class="num">3</span> Submit — we'll follow up with listing info</li>
-        </ul>
+      <!-- ── FORM ── -->
+      <form id="signin" novalidate>
+        <p class="trust">🔒 <b>Your info is never shared.</b> It's used only to follow up about this property and your rental search.</p>
 
-        <a class="cta-btn"
-           href="https://docs.google.com/forms/d/e/1FAIpQLSdjIU79hZq9h2LcIDP9isnBVEnSCQmw5hHumtGTZiLzamRuag/viewform"
-           target="_blank" rel="noopener">
-          Sign In to the Viewing →
-        </a>
-        <p class="cta-note">Opens in your browser &nbsp;·&nbsp; No account required</p>
+        <fieldset>
+          <legend>👤 Your Contact Information</legend>
+          <div class="row2">
+            <div>
+              <label class="f">First Name <span class="req">*</span></label>
+              <input type="text" id="firstName" autocomplete="given-name" required>
+            </div>
+            <div>
+              <label class="f">Last Name <span class="req">*</span></label>
+              <input type="text" id="lastName" autocomplete="family-name" required>
+            </div>
+          </div>
+          <label class="f">Email Address <span class="req">*</span></label>
+          <input type="email" id="email" autocomplete="email" inputmode="email" required>
+          <label class="f">Cell Phone <span class="req">*</span></label>
+          <input type="tel" id="phone" autocomplete="tel" inputmode="tel" required>
+          <div class="err" id="err-contact">Please fill in your name, email and phone.</div>
+        </fieldset>
+
+        <!-- honeypot -->
+        <div class="hp" aria-hidden="true">
+          <label>Website</label><input type="text" id="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <fieldset>
+          <legend>👍 Did you like the unit you just viewed? <small>Optional — quick Yes/No taps</small></legend>
+          <div id="feedback-grid"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>🏠 About Your Rental Search</legend>
+          <label class="f">Rental Budget / Month</label>
+          <select id="budget">
+            <option value="">Select…</option>
+            <option>Under $1,500</option>
+            <option>$1,500 – $2,000</option>
+            <option>$2,000 – $2,500</option>
+            <option>$2,500 – $3,000</option>
+            <option>$3,000+</option>
+          </select>
+          <label class="f">Move-In Timeline</label>
+          <select id="timeline">
+            <option value="">Select…</option>
+            <option>Immediately</option>
+            <option>Within 30 days</option>
+            <option>Within 60 days</option>
+            <option>3+ months</option>
+            <option>Just Exploring</option>
+          </select>
+          <label class="f">Current Living Situation</label>
+          <select id="livingSituation">
+            <option value="">Select…</option>
+            <option>Currently Renting</option>
+            <option>Living with Family</option>
+            <option>Owning — Looking to Downsize</option>
+          </select>
+        </fieldset>
+
+        <fieldset>
+          <legend>🏡 Essentials in your next home <small>Optional</small></legend>
+          <div id="essentials-grid"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>🔑 Interested in buying a home in the future? <small>We have a great buyer program when you're ready — no pressure at all!</small></legend>
+          <div class="chips" id="futureBuyer">
+            <button type="button" data-v="Yes, within 1–2 years">Yes, within 1–2 years</button>
+            <button type="button" data-v="Yes, in 2–5 years">Yes, in 2–5 years</button>
+            <button type="button" data-v="Not sure yet">Not sure yet</button>
+            <button type="button" data-v="No">No</button>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>📝 Almost done!</legend>
+          <label class="f">How did you hear about this rental unit?</label>
+          <select id="howFound">
+            <option value="">Select…</option>
+            <option>Kijiji</option>
+            <option>Rentals.ca</option>
+            <option>Facebook</option>
+            <option>Google</option>
+            <option>Referral</option>
+            <option>Drive-by Sign</option>
+            <option>Other</option>
+          </select>
+          <label class="f">Questions or Comments</label>
+          <textarea id="comments" rows="3" placeholder="Any questions about this unit or the application process?"></textarea>
+        </fieldset>
+
+        <div class="err" id="err-submit"></div>
+        <button type="submit" class="submit-btn" id="submit-btn">Sign In ✓</button>
+        <p class="submit-note">No account required · Takes effect immediately</p>
+      </form>
+
+      <!-- ── SUCCESS ── -->
+      <div id="success">
+        <div class="big">🎉</div>
+        <h2>Thanks for signing in!</h2>
+        <p>Sheena will be in touch shortly with the rental application and next steps.</p>
+        <div class="phones">
+          📞 Sheena: +1 (825) 440-4583<br>
+          📞 Rosh: +1 (825) 449-5083
+        </div>
+        <p>— Sheena &amp; Rosh Issac, Dreamhouse Realty Ltd.</p>
+        <button class="again-btn" onclick="resetForm()">Sign in another viewer →</button>
       </div>
 
       <div class="agents">
@@ -353,5 +352,149 @@
     <p>Issac Realty Team &nbsp;·&nbsp; Associates of Dreamhouse Realty Ltd. &nbsp;·&nbsp; Alberta</p>
   </footer>
 
+<script>
+// Backend: same Apps Script project as the Google Form — one pipeline.
+var API = "https://script.google.com/macros/s/AKfycbyTB3OVLFtFeXun4F5zPLQn8EkZhQSEaNIjp22aRkAZ22W1gBuiiyUQZEygUeMnRsLF/exec";
+
+// Grid definitions — row labels must match Code.gs (UNIT_FEEDBACK_ROWS / ESSENTIALS_ROWS)
+var FEEDBACK_ROWS = ["Bedrooms","Bathrooms","Kitchen","Front room","Kerb appeal","Backyard","Overall","Rent pricing"];
+var ESSENTIALS = [
+  { row: "Bedrooms",    opts: ["1","2","3","4+"] },
+  { row: "Bathrooms",   opts: ["1","1.5","2","2+"] },
+  { row: "Car Parking", opts: ["None","1","2+"] },
+];
+
+var answers = { unitFeedback: {}, essentials: {}, futureBuyer: "" };
+
+// build Yes/No feedback grid
+var fg = document.getElementById("feedback-grid");
+FEEDBACK_ROWS.forEach(function (row) {
+  var div = document.createElement("div");
+  div.className = "grid-row";
+  div.innerHTML = "<span>" + row + "</span>" +
+    '<span class="seg">' +
+    '<button type="button" data-row="' + row + '" data-v="Yes">Yes</button>' +
+    '<button type="button" data-row="' + row + '" data-v="No">No</button></span>';
+  fg.appendChild(div);
+});
+fg.addEventListener("click", function (e) {
+  var b = e.target.closest("button"); if (!b) return;
+  var row = b.dataset.row, v = b.dataset.v;
+  var already = answers.unitFeedback[row] === v;
+  answers.unitFeedback[row] = already ? "" : v;          // tap again to clear
+  b.parentElement.querySelectorAll("button").forEach(function (x) {
+    x.className = "";
+    if (!already && x === b) x.className = v === "Yes" ? "sel-yes" : "sel-no";
+  });
+});
+
+// build essentials grid
+var eg = document.getElementById("essentials-grid");
+ESSENTIALS.forEach(function (def) {
+  var div = document.createElement("div");
+  div.className = "grid-row";
+  div.innerHTML = "<span>" + def.row + "</span>" +
+    '<span class="seg">' + def.opts.map(function (o) {
+      return '<button type="button" data-row="' + def.row + '" data-v="' + o + '">' + o + "</button>";
+    }).join("") + "</span>";
+  eg.appendChild(div);
+});
+eg.addEventListener("click", function (e) {
+  var b = e.target.closest("button"); if (!b) return;
+  var row = b.dataset.row, v = b.dataset.v;
+  var already = answers.essentials[row] === v;
+  answers.essentials[row] = already ? "" : v;
+  b.parentElement.querySelectorAll("button").forEach(function (x) {
+    x.className = (!already && x === b) ? "sel-opt" : "";
+  });
+});
+
+// future buyer chips
+document.getElementById("futureBuyer").addEventListener("click", function (e) {
+  var b = e.target.closest("button"); if (!b) return;
+  var already = answers.futureBuyer === b.dataset.v;
+  answers.futureBuyer = already ? "" : b.dataset.v;
+  this.querySelectorAll("button").forEach(function (x) {
+    x.classList.toggle("sel", !already && x === b);
+  });
+});
+
+// live unit details from CONFIG (graceful if offline)
+fetch(API).then(function (r) { return r.json(); }).then(function (u) {
+  document.getElementById("unit-bar").innerHTML =
+    "📍 " + u.address + "<br><small>$" + u.rent + "/mo · " + u.bedrooms +
+    " bed / " + u.bathrooms + " bath · Showing: " + u.showingDate + ", " + u.showingTime + "</small>";
+}).catch(function () {
+  document.getElementById("unit-bar").innerHTML = "<small>Today's showing — details with your agent</small>";
+});
+
+// submit
+document.getElementById("signin").addEventListener("submit", function (e) {
+  e.preventDefault();
+  var get = function (id) { return document.getElementById(id).value.trim(); };
+  var errC = document.getElementById("err-contact");
+  var errS = document.getElementById("err-submit");
+  errC.style.display = errS.style.display = "none";
+
+  var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(get("email"));
+  var phoneOk = get("phone").replace(/\D/g, "").length >= 10;
+  if (!get("firstName") || !get("lastName") || !emailOk || !phoneOk) {
+    errC.style.display = "block";
+    errC.textContent = !emailOk && get("email") ? "That email address doesn't look right."
+      : (!phoneOk && get("phone") ? "That phone number looks too short."
+      : "Please fill in your name, email and phone.");
+    errC.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+
+  var btn = document.getElementById("submit-btn");
+  btn.disabled = true; btn.textContent = "Saving…";
+
+  var payload = {
+    firstName: get("firstName"), lastName: get("lastName"),
+    email: get("email"), phone: get("phone"),
+    budget: get("budget"), timeline: get("timeline"),
+    livingSituation: get("livingSituation"),
+    futureBuyer: answers.futureBuyer,
+    unitFeedback: answers.unitFeedback, essentials: answers.essentials,
+    howFound: get("howFound"), comments: get("comments"),
+    website: get("website"),   // honeypot
+  };
+
+  // text/plain avoids a CORS preflight that Apps Script can't answer
+  fetch(API, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (res && res.ok) {
+        document.getElementById("signin").style.display = "none";
+        document.getElementById("success").style.display = "block";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        throw new Error((res && res.error) || "Unknown error");
+      }
+    })
+    .catch(function (err) {
+      btn.disabled = false; btn.textContent = "Sign In ✓";
+      errS.style.display = "block";
+      errS.textContent = "⚠️ Couldn't save (" + (navigator.onLine ? err.message : "no internet") +
+        "). Please try again, or just tell Sheena your details — +1 (825) 440-4583.";
+    });
+});
+
+// kiosk reset — iPad gets handed to the next viewer
+function resetForm() {
+  document.getElementById("signin").reset();
+  answers = { unitFeedback: {}, essentials: {}, futureBuyer: "" };
+  document.querySelectorAll(".seg button, .chips button").forEach(function (b) {
+    b.className = b.className.indexOf("sel") > -1 ? "" : b.className;
+    b.classList.remove("sel", "sel-yes", "sel-no", "sel-opt");
+  });
+  var btn = document.getElementById("submit-btn");
+  btn.disabled = false; btn.textContent = "Sign In ✓";
+  document.getElementById("success").style.display = "none";
+  document.getElementById("signin").style.display = "block";
+  window.scrollTo({ top: 0 });
+}
+</script>
 </body>
 </html>
