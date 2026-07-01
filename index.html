@@ -206,6 +206,45 @@
   @keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
+  /* live unit not-set prompt (agents tap to set) */
+  #unit-bar.not-set{cursor:pointer;color:var(--app-accent)}
+  #unit-bar.not-set small{color:var(--c-muted)}
+
+  /* ── ZONE 3 · BAND setup link ── */
+  #setup-link{color:var(--c-muted);font-size:10.5px;text-decoration:underline;
+    background:none;border:none;cursor:pointer;font-family:inherit;white-space:nowrap;padding:6px 2px}
+
+  /* ── Unit setup modal (agents only, PIN-locked) ── */
+  #setup-wrap{display:none;position:fixed;inset:0;z-index:1000;
+    background:rgba(9,9,11,.62);overflow-y:auto;padding:18px 12px 40px}
+  #setup-wrap.open{display:block}
+  .setup-card{background:var(--c-ivory-card);border-radius:var(--radius);max-width:520px;
+    margin:0 auto;padding:24px 18px;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.4)}
+  .setup-card h2{font-family:var(--serif);font-weight:500;font-size:1.25rem;margin-bottom:4px}
+  .setup-card .sub{font-size:12.5px;color:var(--c-muted-l);margin-bottom:14px;line-height:1.5}
+  .close-x{position:absolute;top:12px;right:14px;font-size:1.3rem;line-height:1;
+    background:none;border:none;color:var(--c-muted-l);cursor:pointer;padding:8px}
+  #pin-input{text-align:center;font-size:1.6rem;letter-spacing:.5em;font-weight:700}
+  .setup-btn{display:block;width:100%;font:inherit;margin-top:14px;
+    background:var(--c-charcoal);color:var(--c-ink);border:none;cursor:pointer;
+    font-size:15px;font-weight:700;padding:15px;border-radius:999px}
+  .setup-btn.gold{background:var(--grad-gold);color:#241a07;box-shadow:0 8px 22px rgba(176,132,56,.32)}
+  .setup-btn:disabled{opacity:.6}
+  .gps-row{display:flex;gap:8px;margin-top:6px}
+  .gps-row input{flex:1}
+  .gps-btn{font:inherit;font-size:12.5px;font-weight:700;white-space:nowrap;
+    background:var(--ok);color:#fff;border:none;border-radius:var(--radius-sm);padding:0 14px;cursor:pointer}
+  #map{height:200px;border-radius:var(--radius-sm);margin-top:10px;border:1px solid var(--c-hair-l)}
+  .map-hint{font-size:11.5px;color:var(--c-muted-l);margin-top:6px;line-height:1.4}
+  #addr-suggest{display:none;width:100%;text-align:left;font:inherit;font-size:12.5px;
+    background:var(--app-accent-soft);color:var(--c-charcoal);
+    border:1px dashed var(--app-accent);border-radius:var(--radius-sm);
+    padding:11px 12px;margin-top:8px;cursor:pointer;line-height:1.4}
+  #addr-suggest b{color:var(--app-accent-ink)}
+  #setup-msg{font-size:12.5px;margin-top:10px;display:none;line-height:1.5}
+  #setup-msg.ok{color:var(--ok);display:block}
+  #setup-msg.bad{color:var(--err);display:block}
+
   @media (max-width:400px){
     .hero{padding-left:22px;padding-right:22px}
     .chips button{padding:9px 13px}
@@ -367,9 +406,66 @@
   <!-- ── ZONE 3 · BROKERAGE BAND (RECA) ── -->
   <footer class="band">
     <img src="icons/dreamhouse-logo.png" alt="Dreamhouse Realty Ltd." />
-    <div class="b-txt"><b>Sheena &amp; Rosh Issac Property Group</b> - Associates of Dreamhouse Realty Ltd. · Alberta</div>
+    <div class="b-txt"><b>Sheena &amp; Rosh Issac Property Group</b> - Associates of Dreamhouse Realty Ltd.</div>
+    <button id="setup-link" onclick="openSetup()">⚙︎ Unit setup</button>
   </footer>
 
+</div>
+
+<!-- ── UNIT SETUP MODAL (agents only) ── -->
+<div id="setup-wrap">
+  <div class="setup-card">
+    <button class="close-x" onclick="closeSetup()">✕</button>
+
+    <!-- step 1: PIN -->
+    <div id="setup-pin">
+      <h2>Agent access</h2>
+      <p class="sub">Enter the 4-digit PIN to set the unit for this showing.</p>
+      <input type="tel" id="pin-input" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
+      <div class="err" id="pin-err">That PIN isn't right - try again.</div>
+      <button class="setup-btn" id="pin-btn" onclick="checkPin()">Unlock</button>
+    </div>
+
+    <!-- step 2: unit details -->
+    <div id="setup-form" style="display:none">
+      <h2>This showing's unit</h2>
+      <p class="sub">Set the address once per showing - the header, all emails and texts use it
+        automatically. <b>Whatever you type always wins</b> over the GPS/map suggestion.</p>
+
+      <label class="f">Property Address <span class="req">*</span></label>
+      <div class="gps-row">
+        <input type="text" id="ev-address" placeholder="Type address, or use GPS / tap the map">
+        <button type="button" class="gps-btn" onclick="useMyLocation()">📍 Use my location</button>
+      </div>
+      <button type="button" id="addr-suggest" onclick="applySuggestion()"></button>
+      <div id="map"></div>
+      <p class="map-hint">Tap the map on the building to get an address suggestion. Wrong number from GPS drift? Just edit the field - typed text is final.</p>
+
+      <div class="row2">
+        <div>
+          <label class="f">Monthly Rent</label>
+          <input type="text" id="ev-rent" inputmode="numeric" placeholder="e.g. 1,850">
+        </div>
+        <div>
+          <label class="f">Showing Time</label>
+          <input type="text" id="ev-time" placeholder="e.g. 2:30 PM">
+        </div>
+      </div>
+      <div class="row2">
+        <div>
+          <label class="f">Beds</label>
+          <input type="text" id="ev-beds" inputmode="numeric" placeholder="e.g. 2">
+        </div>
+        <div>
+          <label class="f">Baths</label>
+          <input type="text" id="ev-baths" inputmode="numeric" placeholder="e.g. 1">
+        </div>
+      </div>
+
+      <div id="setup-msg"></div>
+      <button class="setup-btn gold" id="save-btn" onclick="saveEvent()">✅ Set as this showing's unit</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -413,16 +509,38 @@ document.getElementById("futureBuyer").addEventListener("click", function (e) {
   });
 });
 
-// live unit details from CONFIG (graceful if offline) — "the appointment" hero
-fetch(API).then(function (r) { return r.json(); }).then(function (u) {
-  document.getElementById("unit-bar").innerHTML =
-    "📍 " + u.address +
-    '<div class="slot"><span class="dot"></span><b>' + u.showingTime + "</b>" +
-    '<span class="slot-sub">' + u.showingDate + "</span></div>" +
-    "<small>$" + u.rent + "/mo · " + u.bedrooms + " bed / " + u.bathrooms + " bath</small>";
-}).catch(function () {
-  document.getElementById("unit-bar").innerHTML = "<small>Today's showing - details with your agent</small>";
-});
+// active unit from the agent-set event via doGet — "the appointment" hero
+var activeEvent = null;
+var esc = function (s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+};
+function renderUnitBar() {
+  var bar = document.getElementById("unit-bar");
+  if (activeEvent && activeEvent.set) {
+    bar.className = ""; bar.onclick = null;
+    var meta = [];
+    if (activeEvent.rent) meta.push("$" + esc(activeEvent.rent) + "/mo");
+    if (activeEvent.beds) meta.push(esc(activeEvent.beds) + " bed" + (activeEvent.baths ? " / " + esc(activeEvent.baths) + " bath" : ""));
+    bar.innerHTML = "📍 " + esc(activeEvent.address) +
+      (activeEvent.time ? '<div class="slot"><span class="dot"></span><b>' + esc(activeEvent.time) + "</b>" +
+        '<span class="slot-sub">' + esc(activeEvent.dateLabel || "Today") + "</span></div>" : "") +
+      (meta.length ? "<small>" + meta.join(" · ") + "</small>" : "");
+  } else {
+    bar.className = "not-set"; bar.onclick = openSetup;
+    bar.innerHTML = "⚠️ Today's unit isn't set yet - sign-ins still work" +
+      "<br><small>Sheena / Rosh: tap here to set the unit (PIN required)</small>";
+  }
+}
+function loadEvent() {
+  fetch(API).then(function (r) { return r.json(); }).then(function (ev) {
+    activeEvent = ev; renderUnitBar();
+  }).catch(function () {
+    document.getElementById("unit-bar").innerHTML = "<small>Today's showing - details with your agent</small>";
+  });
+}
+loadEvent();
 
 // submit
 document.getElementById("signin").addEventListener("submit", function (e) {
@@ -497,6 +615,222 @@ function resetForm() {
   document.getElementById("signin").style.display = "block";
   window.scrollTo({ top: 0 });
 }
+
+// ── UNIT SETUP (agents) ─────────────────────────────────────
+var agentPin = "";           // kept in memory after unlock (never stored)
+var map = null, mapPin = null;
+var suggested = "";          // last GPS/map suggestion - typed text always wins
+
+function openSetup() {
+  document.getElementById("setup-wrap").classList.add("open");
+  if (agentPin) { showSetupForm(); }      // already unlocked this session
+  else { document.getElementById("pin-input").focus(); }
+}
+function closeSetup() {
+  document.getElementById("setup-wrap").classList.remove("open");
+}
+function checkPin() {
+  var pin = document.getElementById("pin-input").value.trim();
+  var err = document.getElementById("pin-err");
+  var btn = document.getElementById("pin-btn");
+  err.style.display = "none";
+  if (!/^\d{4}$/.test(pin)) { err.style.display = "block"; return; }
+  btn.disabled = true; btn.textContent = "Checking…";
+
+  fetch(API, { method: "POST", headers: { "Content-Type": "text/plain" },
+    body: JSON.stringify({ action: "pin", pin: pin }) })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      btn.disabled = false; btn.textContent = "Unlock";
+      if (res && res.ok) { agentPin = pin; showSetupForm(); }
+      else {
+        err.textContent = (res && res.error) || "That PIN isn't right - try again.";
+        err.style.display = "block";
+      }
+    })
+    .catch(function () {
+      btn.disabled = false; btn.textContent = "Unlock";
+      err.textContent = "Couldn't reach the server - check the internet and try again.";
+      err.style.display = "block";
+    });
+}
+function showSetupForm() {
+  document.getElementById("setup-pin").style.display = "none";
+  document.getElementById("setup-form").style.display = "block";
+  // pre-fill from the active unit so a mid-showing correction is easy
+  if (activeEvent && activeEvent.set) {
+    document.getElementById("ev-address").value = activeEvent.address || "";
+    document.getElementById("ev-rent").value    = activeEvent.rent || "";
+    document.getElementById("ev-beds").value    = activeEvent.beds || "";
+    document.getElementById("ev-baths").value   = activeEvent.baths || "";
+    document.getElementById("ev-time").value    = activeEvent.time || "";
+  }
+  initMap();
+}
+
+// ── map + GPS: suggestion only - typed text always wins ──
+function initMap() {
+  if (map) { setTimeout(function () { map.invalidateSize(); }, 250); return; }
+  map = L.map("map").setView([51.0447, -114.0719], 11);   // Calgary default
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    { attribution: "© OpenStreetMap" }).addTo(map);
+  map.on("click", function (e) {
+    dropPin(e.latlng.lat, e.latlng.lng);
+    reverseGeocode(e.latlng.lat, e.latlng.lng);
+  });
+  setTimeout(function () { map.invalidateSize(); }, 250);
+}
+function dropPin(lat, lng) {
+  if (mapPin) { mapPin.setLatLng([lat, lng]); }
+  else { mapPin = L.circleMarker([lat, lng], { radius: 9, weight: 2, color: "#fff", fillOpacity: 1, fillColor: "#cf6b3e" }).addTo(map); }
+}
+function useMyLocation() {
+  navigator.geolocation.getCurrentPosition(function (pos) {
+    var lat = pos.coords.latitude, lng = pos.coords.longitude;
+    map.setView([lat, lng], 18);
+    dropPin(lat, lng);
+    reverseGeocode(lat, lng);
+  }, function () {
+    alert("Couldn't get your location - tap the building on the map, or just type the address.");
+  }, { enableHighAccuracy: true, timeout: 8000 });
+}
+function reverseGeocode(lat, lng) {
+  fetch("https://nominatim.openstreetmap.org/reverse?lat=" + lat + "&lon=" + lng + "&format=jsonv2&addressdetails=1")
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var a = d.address || {};
+      var built = [[a.house_number, a.road].filter(Boolean).join(" "),
+                   a.suburb || a.neighbourhood, a.city || a.town].filter(Boolean).join(", ");
+      if (!built) return;
+      suggested = built;
+      var inp = document.getElementById("ev-address");
+      if (!inp.value.trim()) {
+        inp.value = built;                    // empty field → fill straight in (still editable)
+      } else {
+        var s = document.getElementById("addr-suggest");
+        s.innerHTML = "Map suggests: <b>" + esc(built) + "</b> - tap to use (your typed address wins otherwise)";
+        s.style.display = "block";
+      }
+    }).catch(function () {});
+}
+function applySuggestion() {
+  if (suggested) document.getElementById("ev-address").value = suggested;
+  document.getElementById("addr-suggest").style.display = "none";
+}
+function saveEvent() {
+  var get = function (id) { return document.getElementById(id).value.trim(); };
+  var msg = document.getElementById("setup-msg");
+  var btn = document.getElementById("save-btn");
+  msg.className = "";
+  if (!get("ev-address")) {
+    msg.className = "bad"; msg.textContent = "Please enter the property address - type it or use the map.";
+    return;
+  }
+  btn.disabled = true; btn.textContent = "Saving…";
+
+  fetch(API, { method: "POST", headers: { "Content-Type": "text/plain" },
+    body: JSON.stringify({
+      action: "setup", pin: agentPin,
+      address: get("ev-address"), rent: get("ev-rent"),
+      beds: get("ev-beds"), baths: get("ev-baths"), time: get("ev-time"),
+    }) })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      btn.disabled = false; btn.textContent = "✅ Set as this showing's unit";
+      if (res && res.ok) {
+        msg.className = "ok";
+        msg.textContent = "✅ Unit is live - the header and all comms now use this address." +
+          (res.backfilled ? " " + res.backfilled + " earlier sign-in(s) updated too." : "");
+        loadEvent();
+        setTimeout(closeSetup, 2200);
+      } else {
+        msg.className = "bad";
+        msg.textContent = (res && res.error) || "Couldn't save - please try again.";
+      }
+    })
+    .catch(function (err) {
+      btn.disabled = false; btn.textContent = "✅ Set as this showing's unit";
+      msg.className = "bad";
+      msg.textContent = "⚠️ Couldn't save (" + err.message + ") - check the internet and try again.";
+    });
+}
+</script>
+
+<!-- ── DECOUPLED LAYER ── lazy-load Leaflet on first map use only.
+     Keeps the visitor sign-in path zero-CDN on first paint (house-style guardrail);
+     the agent setup map pulls Leaflet only when the modal's unit form opens.
+     The engine script above is left byte-identical; we wrap initMap() here. -->
+<script>
+(function () {
+  var LEAFLET_CSS = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+  var LEAFLET_JS  = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+  var loading = false, queue = [];
+
+  function ensureLeaflet(cb) {
+    if (window.L) { cb(); return; }
+    queue.push(cb);
+    if (loading) return;
+    loading = true;
+    var css = document.createElement("link");
+    css.rel = "stylesheet"; css.href = LEAFLET_CSS;
+    document.head.appendChild(css);
+    var s = document.createElement("script");
+    s.src = LEAFLET_JS;
+    s.onload = function () {
+      loading = false;
+      queue.splice(0).forEach(function (fn) { fn(); });
+    };
+    s.onerror = function () {
+      loading = false; queue.length = 0;
+      alert("The map couldn't load - just type the address instead.");
+    };
+    document.head.appendChild(s);
+  }
+
+  // Wrap the engine's initMap so Leaflet is fetched on demand, then run it.
+  var _initMap = window.initMap;
+  window.initMap = function () {
+    var self = this, args = arguments;
+    ensureLeaflet(function () { _initMap.apply(self, args); });
+  };
+})();
+</script>
+
+<!-- ── DECOUPLED LAYER ── "remember this device" for agents.
+     Once the correct PIN has been entered on a device, that device is trusted:
+     opening Unit setup auto-submits the saved PIN (re-validated by the backend
+     each time via the engine's checkPin), so Sheena/Rosh never re-enter it and can
+     switch units on the spot. A guest's phone is never trusted (they never enter the
+     PIN), so the PIN still gates everyone else. Engine left byte-identical. -->
+<script>
+(function () {
+  var LS = "rv_agent_trust_pin";
+
+  var _showSetupForm = window.showSetupForm;
+  window.showSetupForm = function () {
+    try { if (window.agentPin) localStorage.setItem(LS, window.agentPin); } catch (e) {}
+    return _showSetupForm.apply(this, arguments);
+  };
+
+  var _openSetup = window.openSetup;
+  window.openSetup = function () {
+    _openSetup.apply(this, arguments);
+    if (!window.agentPin) {
+      var saved = null;
+      try { saved = localStorage.getItem(LS); } catch (e) {}
+      if (saved && typeof checkPin === "function") {
+        var inp = document.getElementById("pin-input");
+        if (inp) { inp.value = saved; checkPin(); }
+      }
+    }
+  };
+
+  // Escape hatch (e.g. after a PIN change): window.forgetDevice() clears trust.
+  window.forgetDevice = function () {
+    try { localStorage.removeItem(LS); } catch (e) {}
+    window.agentPin = "";
+  };
+})();
 </script>
 </body>
 </html>
