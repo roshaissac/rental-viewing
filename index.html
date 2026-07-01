@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rental Viewer Sign-In — Issac Realty Team</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Rental Viewer Sign-In - Sheena &amp; Rosh Issac Property Group</title>
 
   <!-- OG / WhatsApp share tags -->
-  <meta property="og:title"       content="Rental Viewer Sign-In — Issac Realty Team" />
-  <meta property="og:description" content="Viewing a rental with Sheena & Rosh Issac? Sign in here — takes 60 seconds." />
+  <meta property="og:title"       content="Rental Viewer Sign-In - Sheena &amp; Rosh Issac Property Group" />
+  <meta property="og:description" content="Viewing a rental with Sheena &amp; Rosh Issac? Sign in here - takes about 60 seconds." />
   <meta property="og:image"       content="https://raw.githubusercontent.com/roshaissac/rental-viewing/main/og-image.png" />
   <meta property="og:image:width"  content="1200" />
   <meta property="og:image:height" content="630" />
@@ -25,339 +25,352 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Rental Sign-In" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
-  <meta name="theme-color" content="#E8470A" />
+  <meta name="theme-color" content="#09090b" />
 
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  /* ════════════════════════════════════════════════════════════════════════
+     A-2 · RENTAL VIEWING SIGN-IN - The Issac House Style
+     Shared kit tokens + per-app knob (--app-accent: ember #cf6b3e).
+     Hero motif "the appointment": a focused booked slot (dot + serif time)
+     under a Fraunces welcome moment, soft ember glow.
+     Self-hosted Fraunces (one woff2, same-origin) - zero third-party on paint.
+     Engine <script>, GAS API URL, payload keys and all DOM ids kept intact.
+     ════════════════════════════════════════════════════════════════════════ */
+  @font-face{
+    font-family:'Fraunces';font-style:normal;font-weight:400 600;font-display:swap;
+    src:url('assets/fraunces-latin-var.woff2') format('woff2');
+  }
 
-    :root {
-      --orange: #E8470A;   /* Issac Realty orange — suite standard */
-      --black:  #000000;
-      --light:  #f0f2f5;
-      --green:  #2c6e49;
-      --line:   #d8dce1;
-    }
+  :root{
+    /* ── GLOBAL (identical across the suite) ─────────────────────────────── */
+    --c-paper:#09090b; --c-card:#16151b; --c-ink:#f4eee2; --c-ink-soft:#d9d3c6;
+    --c-ivory:#f3efe9; --c-ivory-card:#fbf9f5; --c-charcoal:#1c1b20;
+    --c-muted:#a79f91; --c-muted-l:#857c6f;
+    --c-orange:#ee8a4e; --c-gold:#c9a25e;
+    --c-hair-d:rgba(244,238,226,.12); --c-hair-l:rgba(28,27,32,.10);
+    --ok:#3f9d6d; --err:#c0563a;
+    --grad-gold:linear-gradient(120deg,#dcbf86,#c9a25e 50%,#b08438);
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--light);
-      color: var(--black);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    /* ── PER-APP KNOB - A-2 ember ────────────────────────────────────────── */
+    --app-accent:#cf6b3e;
+    --app-accent-soft:rgba(207,107,62,.16);
+    --app-accent-ink:#8f4420;          /* accent text on ivory, AA-safe */
 
-    /* ── Header (unchanged suite branding) ── */
-    header { background: var(--black); }
-    .header-top {
-      text-align: center; font-size: 0.7rem; font-weight: 600;
-      letter-spacing: 0.08em; color: #fff; padding: 6px 16px;
-      border-bottom: 1px solid #222;
-    }
-    .header-top .sep { color: var(--orange); }
-    .header-brand {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 20px 10px; gap: 12px;
-    }
-    .brand-name {
-      font-size: 1.35rem; font-weight: 800; color: var(--orange);
-      letter-spacing: -0.01em; line-height: 1;
-    }
-    .brand-right { background: #fff; border-radius: 6px; padding: 4px 8px; }
-    .header-strip {
-      background: var(--orange); text-align: center; font-size: 0.72rem;
-      font-weight: 700; color: #fff; letter-spacing: 0.06em; padding: 5px 16px;
-    }
+    --radius:22px; --radius-md:14px; --radius-sm:11px;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,Helvetica,Arial,sans-serif;
+    --serif:"Fraunces",Georgia,"Times New Roman",serif;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
 
-    .hero { background: var(--orange); text-align: center; padding: 18px 24px; }
-    .hero h1 { font-size: 1.4rem; font-weight: 800; color: #fff; line-height: 1.2; }
-    .hero p  { font-size: 0.88rem; color: rgba(255,255,255,0.9); margin-top: 4px; }
+  /* ── Reset & base ── */
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:var(--sans);background:#000;color:var(--c-charcoal);
+    line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
 
-    /* ── Unit bar (live from CONFIG via doGet) ── */
-    #unit-bar {
-      background: #1a1a1a; color: #fff; text-align: center;
-      font-size: 0.82rem; font-weight: 600; padding: 9px 16px; line-height: 1.5;
-    }
-    #unit-bar small { color: #bbb; font-weight: 400; }
+  /* ── SHELL ── stationary hero → scrolling ivory workspace → stationary band ── */
+  .app{position:relative;width:100%;max-width:560px;height:100dvh;margin:0 auto;
+    background:var(--c-ivory);display:flex;flex-direction:column;overflow:hidden}
 
-    main { flex: 1; max-width: 560px; width: 100%; margin: 22px auto; padding: 0 14px; }
-    .card {
-      background: #fff; border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden;
-      padding: 24px 20px;
-    }
+  /* ── ZONE 1 · DARK CINEMATIC HERO (the appointment) ── */
+  .hero{flex:0 0 auto;position:relative;background:var(--c-paper);color:var(--c-ink);
+    padding:calc(34px + env(safe-area-inset-top,0px)) 26px 26px;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(120% 80% at 78% 6%,var(--app-accent-soft),transparent 60%)}
+  .hero::after{content:"";position:absolute;left:-26%;top:-44%;width:78%;height:100%;
+    pointer-events:none;opacity:.24;filter:blur(38px);
+    background:radial-gradient(circle,var(--app-accent),transparent 65%)}
+  .hero>*{position:relative;animation:rise .6s var(--ease) both}
+  .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;
+    color:var(--app-accent);display:flex;align-items:center;gap:8px}
+  .eyebrow::before{content:"";width:18px;height:1px;background:var(--app-accent);opacity:.7}
+  .display{font-family:var(--serif);font-weight:500;line-height:1.02;letter-spacing:-.01em;
+    font-size:clamp(34px,9vw,46px);margin:13px 0 0}
 
-    .trust {
-      font-size: 0.78rem; color: #777; text-align: center;
-      margin-bottom: 18px; line-height: 1.5;
-    }
-    .trust b { color: var(--green); }
+  /* live unit details from CONFIG via doGet (script writes #unit-bar) */
+  #unit-bar{margin-top:14px;color:var(--c-ink-soft);font-size:15px;line-height:1.55}
+  #unit-bar small{display:block;margin-top:8px;color:var(--c-muted);font-size:12.5px;letter-spacing:.02em}
+  /* the booked-slot pill - the display moment */
+  .slot{margin-top:12px;display:inline-flex;align-items:center;gap:11px;
+    padding:10px 15px;border:1px solid var(--c-hair-d);border-radius:14px;
+    background:rgba(244,238,226,.03)}
+  .slot b{font-family:var(--serif);font-weight:500;font-size:18px;color:var(--c-ink)}
+  .slot .slot-sub{color:var(--c-muted);font-size:12.5px}
+  .dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;
+    background:var(--app-accent);box-shadow:0 0 0 4px var(--app-accent-soft)}
 
-    fieldset { border: none; margin-bottom: 6px; }
-    legend {
-      font-size: 0.95rem; font-weight: 800; color: var(--black);
-      padding: 14px 0 10px; display: block; width: 100%;
-    }
-    legend small { font-weight: 400; color: #888; font-size: 0.78rem; display: block; margin-top: 2px; }
+  /* ── SOLID SEAM-EDGE ── */
+  .seam{flex:0 0 auto;height:0}
 
-    label.f {
-      display: block; font-size: 0.8rem; font-weight: 700; color: #555;
-      margin: 12px 0 5px;
-    }
-    label.f .req { color: var(--orange); }
-    input[type=text], input[type=email], input[type=tel], select, textarea {
-      width: 100%; font: inherit; font-size: 1rem;
-      border: 1.5px solid var(--line); border-radius: 9px;
-      padding: 13px 12px; background: #fff; color: var(--black);
-      -webkit-appearance: none; appearance: none;
-    }
-    select {
-      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='2' fill='none'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 12px center;
-      padding-right: 34px;
-    }
-    input:focus, select:focus, textarea:focus {
-      outline: 2px solid var(--orange); border-color: var(--orange);
-    }
-    .row2 { display: flex; gap: 10px; }
-    .row2 > div { flex: 1; }
+  /* ── ZONE 2 · LIGHT WORKSPACE (the only part that scrolls) ── */
+  .work{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    background:var(--c-ivory);color:var(--c-charcoal);
+    padding:18px 18px calc(20px + env(safe-area-inset-bottom,0px));
+    display:flex;flex-direction:column;gap:14px}
+  .work>*{animation:rise .6s var(--ease) both;animation-delay:.06s}
 
-    /* ── Yes/No grid rows ── */
-    .grid-row {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 10px; padding: 9px 0; border-bottom: 1px solid #f0f2f5;
-    }
-    .grid-row span { font-size: 0.9rem; color: #333; }
-    .seg { display: flex; gap: 6px; }
-    .seg button {
-      font: inherit; font-size: 0.85rem; font-weight: 700;
-      border: 1.5px solid var(--line); background: #fff; color: #555;
-      border-radius: 18px; padding: 8px 18px; cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .seg button.sel-yes { background: var(--green);  border-color: var(--green);  color: #fff; }
-    .seg button.sel-no  { background: #555;          border-color: #555;          color: #fff; }
-    .seg button.sel-opt { background: var(--orange); border-color: var(--orange); color: #fff; }
+  .trust{font-size:12.5px;color:var(--c-muted-l);text-align:center;line-height:1.5}
+  .trust b{color:var(--ok)}
 
-    /* ── Radio chips (future buyer) ── */
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
-    .chips button {
-      font: inherit; font-size: 0.86rem; font-weight: 600;
-      border: 1.5px solid var(--line); background: #fff; color: #333;
-      border-radius: 18px; padding: 10px 14px; cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .chips button.sel { background: var(--orange); border-color: var(--orange); color: #fff; }
+  .panel{background:var(--c-ivory-card);border:1px solid var(--c-hair-l);
+    border-radius:var(--radius-md);padding:16px 16px;
+    box-shadow:0 1px 2px rgba(0,0,0,.04),0 12px 26px rgba(28,27,32,.06)}
 
-    .err { color: #c0392b; font-size: 0.8rem; margin-top: 4px; display: none; }
+  fieldset{border:none}
+  .legend{font-size:14.5px;font-weight:700;color:var(--c-charcoal);
+    display:block;width:100%;margin-bottom:2px}
+  .legend small{font-weight:400;color:var(--c-muted-l);font-size:12.5px;display:block;margin-top:3px}
 
-    .submit-btn {
-      display: block; width: 100%; font: inherit;
-      background: var(--orange); color: #fff; border: none; cursor: pointer;
-      font-size: 1.05rem; font-weight: 800; padding: 16px; border-radius: 9px;
-      margin-top: 20px; letter-spacing: 0.02em;
-    }
-    .submit-btn:disabled { opacity: 0.6; }
-    .submit-note { text-align: center; font-size: 0.74rem; color: #999; margin-top: 9px; }
+  label.f{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    font-weight:600;color:var(--c-muted-l);margin:13px 0 6px}
+  label.f .req{color:var(--app-accent)}
 
-    /* honeypot — humans never see it */
-    .hp { position: absolute; left: -9999px; opacity: 0; height: 0; overflow: hidden; }
+  input[type=text], input[type=email], input[type=tel], select, textarea{
+    width:100%;font:inherit;font-size:16px;
+    border:1px solid var(--c-hair-l);border-radius:var(--radius-sm);
+    padding:13px 13px;background:#fff;color:var(--c-charcoal);
+    -webkit-appearance:none;appearance:none;transition:border-color .12s var(--ease),box-shadow .12s var(--ease)}
+  textarea{line-height:1.5}
+  select{
+    background-image:url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23857c6f' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 13px center;padding-right:34px}
+  input::placeholder, textarea::placeholder{color:#a9a294}
+  input:focus, select:focus, textarea:focus{
+    outline:none;border-color:var(--app-accent);box-shadow:0 0 0 3px var(--app-accent-soft)}
+  .row2{display:flex;gap:10px}
+  .row2 > div{flex:1}
 
-    /* ── Success view ── */
-    #success { display: none; text-align: center; padding: 30px 20px; }
-    #success .big { font-size: 3rem; }
-    #success h2 { font-size: 1.25rem; margin: 10px 0 8px; }
-    #success p { font-size: 0.9rem; color: #555; line-height: 1.6; }
-    #success .phones { margin: 16px 0; font-size: 0.95rem; font-weight: 600; color: var(--black); line-height: 1.8; }
-    .again-btn {
-      font: inherit; background: var(--black); color: #fff; border: none;
-      border-radius: 9px; font-weight: 700; padding: 14px 26px;
-      margin-top: 14px; cursor: pointer;
-    }
+  /* ── Yes/No feedback grid (script builds .grid-row / .seg, wipes button class) ── */
+  .grid-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:10px 0;border-bottom:1px solid var(--c-hair-l)}
+  .grid-row:last-child{border-bottom:none}
+  .grid-row > span{font-size:14px;color:var(--c-charcoal)}
+  .seg{display:flex;gap:6px;flex:0 0 auto}
+  .seg button{font:inherit;font-size:13px;font-weight:600;min-height:40px;
+    border:1px solid var(--c-hair-l);background:#fff;color:var(--c-muted-l);
+    border-radius:999px;padding:8px 18px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;transition:background .12s var(--ease),border-color .12s var(--ease)}
+  .seg button.sel-yes{background:var(--ok);border-color:var(--ok);color:#fff}
+  .seg button.sel-no{background:var(--c-muted-l);border-color:var(--c-muted-l);color:#fff}
 
-    .agents {
-      border-top: 1px solid #f0f0f0; padding: 18px 20px; margin-top: 20px;
-      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
-    }
-    .agent { text-align: center; }
-    .agent-name { font-size: 0.9rem; font-weight: 700; color: var(--orange); }
-    .agent-role { font-size: 0.72rem; color: #888; margin-bottom: 4px; }
-    .agent-contact { font-size: 0.78rem; color: #444; }
-    .agent-divider { width: 1px; background: #e0e0e0; align-self: stretch; }
+  /* ── future-buyer chips (script toggles .sel - kept) ── */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .chips button{font:inherit;font-size:13px;font-weight:600;min-height:44px;
+    border:1px solid var(--c-hair-l);background:#fff;color:var(--c-charcoal);
+    border-radius:999px;padding:10px 15px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;transition:background .12s var(--ease),border-color .12s var(--ease)}
+  .chips button.sel{background:var(--app-accent-soft);border-color:var(--app-accent);
+    color:var(--app-accent-ink);font-weight:700}
 
-    footer { background: var(--black); padding: 14px 16px; text-align: center; }
-    footer p { font-size: 0.68rem; color: #777; }
+  .err{color:var(--err);font-size:13px;margin-top:8px;display:none}
 
-    @media (max-width: 400px) {
-      .hero h1 { font-size: 1.2rem; }
-      .agent-divider { display: none; }
-      .seg button { padding: 8px 13px; }
-    }
+  /* ── gold pill CTA ── */
+  .submit-btn{display:block;width:100%;font:inherit;
+    background:var(--grad-gold);color:#241a07;border:none;cursor:pointer;
+    font-size:16px;font-weight:700;padding:16px;border-radius:999px;letter-spacing:.01em;
+    box-shadow:0 8px 22px rgba(176,132,56,.32);transition:transform .12s var(--ease)}
+  .submit-btn:active{transform:scale(.98)}
+  .submit-btn:disabled{opacity:.6}
+  .submit-note{text-align:center;font-size:12px;color:var(--c-muted-l);margin-top:10px}
+
+  /* honeypot - humans never see it */
+  .hp{position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden}
+
+  /* ── Success view ── */
+  #success{display:none;text-align:center;padding:8px 4px}
+  #success .big{font-size:2.6rem}
+  #success h2{font-family:var(--serif);font-weight:500;font-size:1.5rem;margin:10px 0 8px}
+  #success p{font-size:14px;color:var(--c-muted-l);line-height:1.6}
+  #success .phones{margin:16px 0;font-size:15px;font-weight:600;color:var(--c-charcoal);line-height:1.8}
+  .again-btn{font:inherit;background:var(--c-charcoal);color:var(--c-ink);border:none;
+    border-radius:999px;font-weight:700;font-size:14px;padding:14px 26px;margin-top:14px;cursor:pointer}
+
+  /* agent contact card */
+  .agents{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+  .agent{text-align:center}
+  .agent-name{font-size:14px;font-weight:700;color:var(--app-accent-ink)}
+  .agent-role{font-size:11.5px;color:var(--c-muted-l);margin:2px 0 4px}
+  .agent-contact{font-size:12.5px;color:var(--c-charcoal);line-height:1.5}
+  .agent-divider{width:1px;background:var(--c-hair-l);align-self:stretch}
+
+  /* ── ZONE 3 · BAND · brokerage disclosure (shared, RECA) ── */
+  .band{flex:0 0 auto;background:var(--c-paper);color:var(--c-ink-soft);
+    padding:11px 18px calc(11px + env(safe-area-inset-bottom,0px));
+    display:flex;align-items:center;gap:11px;border-top:1px solid var(--c-hair-d);font-size:11px}
+  .band img{height:22px;width:auto;opacity:.95;filter:brightness(0) invert(1)}
+  .band .b-txt{line-height:1.35;flex:1}
+  .band b{color:var(--c-ink);font-weight:600}
+
+  @keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  @media (max-width:400px){
+    .hero{padding-left:22px;padding-right:22px}
+    .chips button{padding:9px 13px}
+    .seg button{padding:8px 14px}
+    .agent-divider{display:none}
+  }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="header-top">
-      BUY <span class="sep">&nbsp;|&nbsp;</span> SELL <span class="sep">&nbsp;|&nbsp;</span> LEASE <span class="sep">&nbsp;|&nbsp;</span> PROPERTY MANAGEMENT
-    </div>
-    <div class="header-brand">
-      <div class="brand-name">Issac Realty Team</div>
-      <div class="brand-right">
-        <img src="icons/dreamhouse-logo.png" alt="Dreamhouse Realty" style="height:48px;width:auto;" />
-      </div>
-    </div>
-    <div class="header-strip">Associates of Dreamhouse Realty Ltd. &nbsp;·&nbsp; Alberta</div>
+<div class="app">
+
+  <!-- ── ZONE 1 · HERO (the appointment) ── -->
+  <header class="hero">
+    <div class="eyebrow">Rental Viewing</div>
+    <h1 class="display">You're here.</h1>
+    <!-- Live unit details from CONFIG via doGet - script writes this, untouched pipeline. -->
+    <div id="unit-bar"><small>Loading unit details…</small></div>
   </header>
+  <div class="seam"></div>
 
-  <div class="hero">
-    <h1>Rental Viewer Sign-In</h1>
-    <p>Thanks for viewing today — sign in below, it takes about 60 seconds</p>
-  </div>
+  <!-- ── ZONE 2 · WORKSPACE (scrolls) ── -->
+  <main class="work">
 
-  <div id="unit-bar"><small>Loading unit details…</small></div>
+    <!-- ── FORM ── -->
+    <form id="signin" novalidate>
+      <p class="trust">🔒 <b>Your info is never shared.</b> It's used only to follow up about this property and your rental search.</p>
 
-  <main>
-    <div class="card">
-
-      <!-- ── FORM ── -->
-      <form id="signin" novalidate>
-        <p class="trust">🔒 <b>Your info is never shared.</b> It's used only to follow up about this property and your rental search.</p>
-
-        <fieldset>
-          <legend>👤 Your Contact Information</legend>
-          <div class="row2">
-            <div>
-              <label class="f">First Name <span class="req">*</span></label>
-              <input type="text" id="firstName" autocomplete="given-name" required>
-            </div>
-            <div>
-              <label class="f">Last Name <span class="req">*</span></label>
-              <input type="text" id="lastName" autocomplete="family-name" required>
-            </div>
+      <fieldset class="panel">
+        <div class="legend">Your contact information</div>
+        <div class="row2">
+          <div>
+            <label class="f">First Name <span class="req">*</span></label>
+            <input type="text" id="firstName" autocomplete="given-name" required>
           </div>
-          <label class="f">Email Address <span class="req">*</span></label>
-          <input type="email" id="email" autocomplete="email" inputmode="email" required>
-          <label class="f">Cell Phone <span class="req">*</span></label>
-          <input type="tel" id="phone" autocomplete="tel" inputmode="tel" required>
-          <div class="err" id="err-contact">Please fill in your name, email and phone.</div>
-        </fieldset>
-
-        <!-- honeypot -->
-        <div class="hp" aria-hidden="true">
-          <label>Website</label><input type="text" id="website" tabindex="-1" autocomplete="off">
-        </div>
-
-        <fieldset>
-          <legend>👍 Did you like the unit you just viewed? <small>Optional — quick Yes/No taps</small></legend>
-          <div id="feedback-grid"></div>
-        </fieldset>
-
-        <fieldset>
-          <legend>🏠 About Your Rental Search</legend>
-          <label class="f">Rental Budget / Month</label>
-          <select id="budget">
-            <option value="">Select…</option>
-            <option>Under $1,500</option>
-            <option>$1,500 – $2,000</option>
-            <option>$2,000 – $2,500</option>
-            <option>$2,500 – $3,000</option>
-            <option>$3,000+</option>
-          </select>
-          <label class="f">Move-In Timeline</label>
-          <select id="timeline">
-            <option value="">Select…</option>
-            <option>Immediately</option>
-            <option>Within 30 days</option>
-            <option>Within 60 days</option>
-            <option>3+ months</option>
-            <option>Just Exploring</option>
-          </select>
-          <label class="f">Current Living Situation</label>
-          <select id="livingSituation">
-            <option value="">Select…</option>
-            <option>Currently Renting</option>
-            <option>Living with Family</option>
-            <option>Owning — Looking to Downsize</option>
-          </select>
-        </fieldset>
-
-        <fieldset>
-          <legend>🏡 Essentials in your next home <small>Optional — your words, your wish list</small></legend>
-          <label class="f">Bedrooms</label>
-          <input type="text" id="ess-bedrooms" placeholder="e.g. 3, or 2 + a den for the office">
-          <label class="f">Bathrooms</label>
-          <input type="text" id="ess-bathrooms" placeholder="e.g. 2 full, main floor preferred">
-          <label class="f">Car Parking</label>
-          <input type="text" id="ess-parking" placeholder="e.g. heated garage, or street is fine">
-          <label class="f">Anything else you must have (or must avoid)?</label>
-          <textarea id="ess-musthaves" rows="2" placeholder="e.g. big pantry on the main floor, no carpet, near a dog park…"></textarea>
-        </fieldset>
-
-        <fieldset>
-          <legend>🔑 Interested in buying a home in the future? <small>We have a great buyer program when you're ready — no pressure at all!</small></legend>
-          <div class="chips" id="futureBuyer">
-            <button type="button" data-v="Yes, within 1–2 years">Yes, within 1–2 years</button>
-            <button type="button" data-v="Yes, in 2–5 years">Yes, in 2–5 years</button>
-            <button type="button" data-v="Not sure yet">Not sure yet</button>
-            <button type="button" data-v="No">No</button>
+          <div>
+            <label class="f">Last Name <span class="req">*</span></label>
+            <input type="text" id="lastName" autocomplete="family-name" required>
           </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>📝 Almost done!</legend>
-          <label class="f">How did you hear about this rental unit?</label>
-          <select id="howFound">
-            <option value="">Select…</option>
-            <option>Kijiji</option>
-            <option>Rentals.ca</option>
-            <option>Facebook</option>
-            <option>Google</option>
-            <option>Referral</option>
-            <option>Drive-by Sign</option>
-            <option>Other</option>
-          </select>
-          <label class="f">Questions or Comments</label>
-          <textarea id="comments" rows="3" placeholder="Any questions about this unit or the application process?"></textarea>
-        </fieldset>
-
-        <div class="err" id="err-submit"></div>
-        <button type="submit" class="submit-btn" id="submit-btn">Sign In ✓</button>
-        <p class="submit-note">No account required · Takes effect immediately</p>
-      </form>
-
-      <!-- ── SUCCESS ── -->
-      <div id="success">
-        <div class="big">🎉</div>
-        <h2>Thanks for signing in!</h2>
-        <p>Sheena will be in touch shortly with the rental application and next steps.</p>
-        <div class="phones">
-          📞 Sheena: +1 (825) 440-4583<br>
-          📞 Rosh: +1 (825) 449-5083
         </div>
-        <p>— Sheena &amp; Rosh Issac, Dreamhouse Realty Ltd.</p>
-        <button class="again-btn" onclick="resetForm()">Sign in another viewer →</button>
+        <label class="f">Email Address <span class="req">*</span></label>
+        <input type="email" id="email" autocomplete="email" inputmode="email" required>
+        <label class="f">Cell Phone <span class="req">*</span></label>
+        <input type="tel" id="phone" autocomplete="tel" inputmode="tel" required>
+        <div class="err" id="err-contact">Please fill in your name, email and phone.</div>
+      </fieldset>
+
+      <!-- honeypot -->
+      <div class="hp" aria-hidden="true">
+        <label>Website</label><input type="text" id="website" tabindex="-1" autocomplete="off">
       </div>
 
-      <div class="agents">
-        <div class="agent">
-          <div class="agent-name">Sheena Issac</div>
-          <div class="agent-role">Licensed Property Manager</div>
-          <div class="agent-contact">+1 (825) 440-4583<br>sheena@issacrealty.com</div>
+      <fieldset class="panel">
+        <div class="legend">Did you like the unit you just viewed? <small>Optional - quick Yes/No taps</small></div>
+        <div id="feedback-grid"></div>
+      </fieldset>
+
+      <fieldset class="panel">
+        <div class="legend">About your rental search</div>
+        <label class="f">Rental Budget / Month</label>
+        <select id="budget">
+          <option value="">Select…</option>
+          <option>Under $1,500</option>
+          <option>$1,500 – $2,000</option>
+          <option>$2,000 – $2,500</option>
+          <option>$2,500 – $3,000</option>
+          <option>$3,000+</option>
+        </select>
+        <label class="f">Move-In Timeline</label>
+        <select id="timeline">
+          <option value="">Select…</option>
+          <option>Immediately</option>
+          <option>Within 30 days</option>
+          <option>Within 60 days</option>
+          <option>3+ months</option>
+          <option>Just Exploring</option>
+        </select>
+        <label class="f">Current Living Situation</label>
+        <select id="livingSituation">
+          <option value="">Select…</option>
+          <option>Currently Renting</option>
+          <option>Living with Family</option>
+          <option>Owning - Looking to Downsize</option>
+        </select>
+      </fieldset>
+
+      <fieldset class="panel">
+        <div class="legend">Essentials in your next home <small>Optional - your words, your wish list</small></div>
+        <label class="f">Bedrooms</label>
+        <input type="text" id="ess-bedrooms" placeholder="e.g. 3, or 2 + a den for the office">
+        <label class="f">Bathrooms</label>
+        <input type="text" id="ess-bathrooms" placeholder="e.g. 2 full, main floor preferred">
+        <label class="f">Car Parking</label>
+        <input type="text" id="ess-parking" placeholder="e.g. heated garage, or street is fine">
+        <label class="f">Anything else you must have (or must avoid)?</label>
+        <textarea id="ess-musthaves" rows="2" placeholder="e.g. big pantry on the main floor, no carpet, near a dog park…"></textarea>
+      </fieldset>
+
+      <fieldset class="panel">
+        <div class="legend">Interested in buying a home in the future? <small>We have a great buyer program when you're ready - no pressure at all!</small></div>
+        <div class="chips" id="futureBuyer">
+          <button type="button" data-v="Yes, within 1–2 years">Yes, within 1–2 years</button>
+          <button type="button" data-v="Yes, in 2–5 years">Yes, in 2–5 years</button>
+          <button type="button" data-v="Not sure yet">Not sure yet</button>
+          <button type="button" data-v="No">No</button>
         </div>
-        <div class="agent-divider"></div>
-        <div class="agent">
-          <div class="agent-name">Rosh Issac</div>
-          <div class="agent-role">Realtor®</div>
-          <div class="agent-contact">+1 (825) 449-5083<br>rosh@issacrealty.com</div>
-        </div>
+      </fieldset>
+
+      <fieldset class="panel">
+        <div class="legend">Almost done</div>
+        <label class="f">How did you hear about this rental unit?</label>
+        <select id="howFound">
+          <option value="">Select…</option>
+          <option>Kijiji</option>
+          <option>Rentals.ca</option>
+          <option>Facebook</option>
+          <option>Google</option>
+          <option>Referral</option>
+          <option>Drive-by Sign</option>
+          <option>Other</option>
+        </select>
+        <label class="f">Questions or Comments</label>
+        <textarea id="comments" rows="3" placeholder="Any questions about this unit or the application process?"></textarea>
+      </fieldset>
+
+      <div class="err" id="err-submit"></div>
+      <button type="submit" class="submit-btn" id="submit-btn">Sign In ✓</button>
+      <p class="submit-note">No account required · Takes effect immediately</p>
+    </form>
+
+    <!-- ── SUCCESS ── -->
+    <div id="success">
+      <div class="big">🎉</div>
+      <h2>Thanks for signing in!</h2>
+      <p>Sheena will be in touch shortly with the rental application and next steps.</p>
+      <div class="phones">
+        📞 Sheena: +1 (825) 440-4583<br>
+        📞 Rosh: +1 (825) 449-5083
+      </div>
+      <p>- Sheena &amp; Rosh Issac, Dreamhouse Realty Ltd.</p>
+      <button class="again-btn" onclick="resetForm()">Sign in another viewer →</button>
+    </div>
+
+    <div class="panel agents">
+      <div class="agent">
+        <div class="agent-name">Sheena Issac</div>
+        <div class="agent-role">Licensed Property Manager</div>
+        <div class="agent-contact">+1 (825) 440-4583<br>sheena@issacrealty.com</div>
+      </div>
+      <div class="agent-divider"></div>
+      <div class="agent">
+        <div class="agent-name">Rosh Issac</div>
+        <div class="agent-role">Realtor®</div>
+        <div class="agent-contact">+1 (825) 449-5083<br>rosh@issacrealty.com</div>
       </div>
     </div>
   </main>
 
-  <footer>
-    <p>Issac Realty Team &nbsp;·&nbsp; Associates of Dreamhouse Realty Ltd. &nbsp;·&nbsp; Alberta</p>
+  <!-- ── ZONE 3 · BROKERAGE BAND (RECA) ── -->
+  <footer class="band">
+    <img src="icons/dreamhouse-logo.png" alt="Dreamhouse Realty Ltd." />
+    <div class="b-txt"><b>Sheena &amp; Rosh Issac Property Group</b> - Associates of Dreamhouse Realty Ltd. · Alberta</div>
   </footer>
+
+</div>
 
 <script>
 // Backend: same Apps Script project as the Google Form — one pipeline.
@@ -400,13 +413,15 @@ document.getElementById("futureBuyer").addEventListener("click", function (e) {
   });
 });
 
-// live unit details from CONFIG (graceful if offline)
+// live unit details from CONFIG (graceful if offline) — "the appointment" hero
 fetch(API).then(function (r) { return r.json(); }).then(function (u) {
   document.getElementById("unit-bar").innerHTML =
-    "📍 " + u.address + "<br><small>$" + u.rent + "/mo · " + u.bedrooms +
-    " bed / " + u.bathrooms + " bath · Showing: " + u.showingDate + ", " + u.showingTime + "</small>";
+    "📍 " + u.address +
+    '<div class="slot"><span class="dot"></span><b>' + u.showingTime + "</b>" +
+    '<span class="slot-sub">' + u.showingDate + "</span></div>" +
+    "<small>$" + u.rent + "/mo · " + u.bedrooms + " bed / " + u.bathrooms + " bath</small>";
 }).catch(function () {
-  document.getElementById("unit-bar").innerHTML = "<small>Today's showing — details with your agent</small>";
+  document.getElementById("unit-bar").innerHTML = "<small>Today's showing - details with your agent</small>";
 });
 
 // submit
@@ -464,7 +479,7 @@ document.getElementById("signin").addEventListener("submit", function (e) {
       btn.disabled = false; btn.textContent = "Sign In ✓";
       errS.style.display = "block";
       errS.textContent = "⚠️ Couldn't save (" + (navigator.onLine ? err.message : "no internet") +
-        "). Please try again, or just tell Sheena your details — +1 (825) 440-4583.";
+        "). Please try again, or just tell Sheena your details - +1 (825) 440-4583.";
     });
 });
 
