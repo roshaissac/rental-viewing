@@ -199,8 +199,12 @@
   .band{flex:0 0 auto;background:var(--c-paper);color:var(--c-ink-soft);
     padding:11px 18px calc(11px + env(safe-area-inset-bottom,0px));
     display:flex;align-items:center;gap:11px;border-top:1px solid var(--c-hair-d);font-size:11px}
-  .band img{height:22px;width:auto;opacity:.95;filter:brightness(0) invert(1)}
-  .band .b-txt{line-height:1.35;flex:1}
+  .band .b-txt{line-height:1.35;flex:1;min-width:0}
+  .band .b-team{display:block;font-size:10.5px;line-height:1.45}
+  .band .b-fine{display:block;font-size:8.5px;color:var(--c-muted);margin-top:4px;line-height:1.4}
+  .band .logo{flex-shrink:0;align-self:center;background:#fff;border-radius:7px;padding:4px 7px;
+    display:flex;align-items:center;justify-content:center}
+  .band .logo img{height:auto;width:auto;max-height:34px;max-width:96px}
   .band b{color:var(--c-ink);font-weight:600}
 
   @keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
@@ -395,8 +399,8 @@
       <h2>Thanks for signing in!</h2>
       <p>Sheena will be in touch shortly with the rental application and next steps.</p>
       <div class="phones">
-        📞 Sheena: +1 (825) 440-4583<br>
-        📞 Rosh: +1 (825) 449-5083
+        📞 Sheena: +1 825 440 4583<br>
+        📞 Rosh: +1 825 449 5083
       </div>
       <p>- Sheena &amp; Rosh Issac, Dreamhouse Realty Ltd.</p>
       <button class="again-btn" onclick="resetForm()">Sign in another viewer →</button>
@@ -406,21 +410,24 @@
       <div class="agent">
         <div class="agent-name">Sheena Issac</div>
         <div class="agent-role">Licensed Property Manager</div>
-        <div class="agent-contact">+1 (825) 440-4583<br>sheena@issacrealty.com</div>
+        <div class="agent-contact">+1 825 440 4583<br>sheena@issacrealty.com</div>
       </div>
       <div class="agent-divider"></div>
       <div class="agent">
         <div class="agent-name">Rosh Issac</div>
         <div class="agent-role">Realtor®</div>
-        <div class="agent-contact">+1 (825) 449-5083<br>rosh@issacrealty.com</div>
+        <div class="agent-contact">+1 825 449 5083<br>rosh@issacrealty.com</div>
       </div>
     </div>
   </main>
 
   <!-- ── ZONE 3 · BROKERAGE BAND (RECA) ── -->
   <footer class="band">
-    <img src="icons/dreamhouse-logo.png" alt="Dreamhouse Realty Ltd." />
-    <div class="b-txt"><b>Sheena &amp; Rosh Issac Property Group</b> - Associates of Dreamhouse Realty Ltd.</div>
+    <div class="b-txt">
+      <span class="b-team"><b>Sheena &amp; Rosh Issac Property Group</b> - Associates of Dreamhouse Realty Ltd., Calgary</span>
+      <span class="b-fine">Estimates are for illustrative purposes only and are based on assumed variables like rates and terms. This information does not constitute financial, mortgage, legal, tax, or investment advice. Referrals to licensed professionals are available upon request.</span>
+    </div>
+    <span class="logo"><img src="icons/dreamhouse-logo.png" alt="Dreamhouse Realty Ltd."></span>
     <button id="setup-link" onclick="openSetup()">⚙︎ Unit setup</button>
   </footer>
 
@@ -617,7 +624,7 @@ document.getElementById("signin").addEventListener("submit", function (e) {
       btn.disabled = false; btn.textContent = "Sign In ✓";
       errS.style.display = "block";
       errS.textContent = "⚠️ Couldn't save (" + (navigator.onLine ? err.message : "no internet") +
-        "). Please try again, or just tell Sheena your details - +1 (825) 440-4583.";
+        "). Please try again, or just tell Sheena your details - +1 825 440 4583.";
     });
 });
 
